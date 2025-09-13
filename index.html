@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ประเมินความพึงพอใจTKLservice</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <style>
+        /* เพิ่มฟอนต์ที่สวยงามและสไตล์ที่จำเป็น */
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+        body { font-family: 'Sarabun', sans-serif; }
+        .star-rating label { color: #ddd; cursor: pointer; font-size: 2.5rem; transition: color 0.2s; }
+        .star-rating input:checked ~ label,
+        .star-rating label:hover,
+        .star-rating label:hover ~ label { color: #f5b301; }
+        .star-rating input { display: none; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner { display: inline-block; width: 50px; height: 50px; border: 3px solid rgba(0,0,0,0.1); border-radius: 50%; border-top-color: #2c7744; animation: spin 1s ease-in-out infinite; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div id="app-container" class="min-h-screen p-4 md:p-8">
+        <div id="loading" class="text-center py-10">
+            <div class="spinner"></div>
+            <p class="mt-4 text-gray-600">กำลังโหลดข้อมูล...</p>
+        </div>
+
+        <div id="thankYouMessage" class="hidden text-center py-10">
+            <i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i>
+            <h1 class="text-2xl font-bold" style="color: #2c7744;">ขอบคุณสำหรับความคิดเห็น!</h1>
+            <p class="mt-2 text-gray-600">เราได้บันทึกข้อมูลการประเมินของท่านเรียบร้อยแล้ว</p>
+        </div>
+
+        <form id="evaluationForm" class="hidden max-w-2xl mx-auto">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <div class="mb-6">
+                    <h1 class="text-2xl font-bold text-center mb-6" style="color: #2c7744;">ประเมินความพึงพอใจการบริการTKLservice</h1>
+                    <div class="bg-gray-100 border rounded-lg p-4 text-sm">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2">
+                            <div><span class="text-gray-500">รหัส:</span> <strong id="info-ticketId" class="text-gray-900">...</strong></div>
+                            <div><span class="text-gray-500">อุปกรณ์:</span> <strong id="info-equipmentName" class="text-gray-900">...</strong></div>
+                            <div class="col-span-full"><span class="text-gray-500">ผู้ดำเนินการ:</span> <strong id="info-operator" class="text-gray-900">...</strong></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <label class="font-semibold text-gray-700">1. โดยรวมแล้ว ท่านพึงพอใจกับการบริการในครั้งนี้เพียงใด?</label>
+                        <div class="star-rating flex flex-row-reverse justify-end mt-2">
+                            <input type="radio" id="overall-5" name="overall" value="5" required><label for="overall-5">★</label>
+                            <input type="radio" id="overall-4" name="overall" value="4"><label for="overall-4">★</label>
+                            <input type="radio" id="overall-3" name="overall" value="3"><label for="overall-3">★</label>
+                            <input type="radio" id="overall-2" name="overall" value="2"><label for="overall-2">★</label>
+                            <input type="radio" id="overall-1" name="overall" value="1"><label for="overall-1">★</label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="font-semibold text-gray-700">2. ท่านมีข้อเสนอแนะเพิ่มเติม หรือคำชมเชยหรือไม่?</label>
+                        <textarea id="feedback-comments" name="comments" rows="4" class="w-full mt-2 p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-green-500" placeholder="(ไม่บังคับ) พิมพ์ความคิดเห็นของคุณที่นี่..."></textarea>
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button type="submit" id="submitBtn" class="w-full text-white font-bold py-3 px-4 rounded-lg transition-colors" style="background-color: #2c7744;" onmouseover="this.style.backgroundColor='#1e5631'" onmouseout="this.style.backgroundColor='#2c7744'">ส่งแบบประเมิน</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="evaluation.js"></script>
+</body>
+</html>
