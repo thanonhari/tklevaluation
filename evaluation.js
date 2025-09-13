@@ -1,7 +1,7 @@
 // ==========================================================
 // == ✨ กรุณาแก้ไขค่า 2 บรรทัดนี้ ✨ ==
 // ==========================================================
-const LIFF_ID = "2007495650-QYp0MBBk"; // LIFF ID ของหน้าประเมินที่คุณสร้างใหม่
+const LIFF_ID = "2008092354-pgKAqJ8O"; // LIFF ID ของหน้าประเมินที่คุณสร้างใหม่
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwFzsPVx7P8srOQZzTC57PqUY9ePm_L5pdBVAXKEsHOJt5LEFLy1REYxIG-O89i-hY3/exec"; // URL ของ Web App ที่ได้จากการ Deploy
 // ==========================================================
 
