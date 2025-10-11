@@ -79,21 +79,15 @@ document.getElementById('evaluationForm').addEventListener('submit', async funct
     };
 
     try {
-        const params = new URLSearchParams();
-        params.append('action', 'submitEvaluation');
-        for (const key in evaluationData) {
-            params.append(key, evaluationData[key]);
-        }
-
-        const response = await fetch(SCRIPT_URL, {
+        const response = await fetch(`${SCRIPT_URL}?action=submitEvaluation`, {
             method: 'POST',
-            body: params
+            body: JSON.stringify(evaluationData),
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         });
 
         const result = await response.json();
-
-        if (result.result !== 'success') {
-            throw new Error(result.message || 'ไม่สามารถบันทึกข้อมูลได้');
+        if (result.result !== 'success' && !result.success) {
+            throw new Error(result.message || 'Unknown error');
         }
         
         document.getElementById('evaluationForm').classList.add('hidden');
