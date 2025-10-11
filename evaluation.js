@@ -79,37 +79,37 @@ document.getElementById('evaluationForm').addEventListener('submit', async funct
     };
 
     try {
-        const response = await fetch(`${SCRIPT_URL}?action=submitEvaluation`, {
+        const params = new URLSearchParams();
+        params.append('action', 'submitEvaluation');
+        for (const key in evaluationData) {
+            params.append(key, evaluationData[key]);
+        }
+
+        const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            // ✨ แก้ไข: ใช้ JSON.stringify สำหรับ body และกำหนด content-type เป็น text/plain
-            // ตามที่ Apps Script ต้องการเมื่อรับค่าจาก e.postData.contents
-            body: JSON.stringify(evaluationData),
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: params
         });
 
         const result = await response.json();
-        if (!result.success) throw new Error(result.message || 'Unknown error');
+
+        if (result.result !== 'success') {
+            throw new Error(result.message || 'ไม่สามารถบันทึกข้อมูลได้');
+        }
         
-        // --- ✨ ส่วนนี้คือโค้ดที่แก้ไขแล้วและทำงานได้ถูกต้อง ✨ ---
-        
-        // ซ่อนฟอร์มทิ้งไปเลย
         document.getElementById('evaluationForm').classList.add('hidden');
 
-        // แสดงข้อความขอบคุณด้วย SweetAlert พร้อมตั้งเวลาปิด
         Swal.fire({
             icon: 'success',
             title: 'ขอบคุณสำหรับความคิดเห็น!',
             text: 'เราได้บันทึกข้อมูลของท่านเรียบร้อยแล้ว',
-            timer: 2500, // แสดงผล 2.5 วินาที
-            showConfirmButton: false, // ไม่ต้องมีปุ่ม OK
-            timerProgressBar: true,   // มีแถบเวลาวิ่งให้ดู
+            timer: 2500,
+            showConfirmButton: false,
+            timerProgressBar: true,
         }).then(() => {
-            // หลังจากที่ SweetAlert ปิดตัวลง (ครบ 2.5 วิ) ให้สั่งปิดหน้าต่าง LIFF
             if (liff.isInClient()) {
                 liff.closeWindow();
             }
         });
-        // --- สิ้นสุดส่วนที่แก้ไข ---
 
     } catch (error) {
         Swal.fire('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลได้: ' + error.message, 'error');
